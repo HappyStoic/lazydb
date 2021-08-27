@@ -1,10 +1,10 @@
-use tui::{backend::Backend, layout::{Constraint, Direction, Layout}, style::{Color, Modifier, Style}, widgets::{
+use tui::{layout::{Constraint, Direction, Layout}, style::{Color, Modifier, Style}, widgets::{
     Block, Borders, Cell, Row, Table,
-}, Frame, Terminal};
-use crate::app::{App, StatefulTable};
+}, Terminal};
+use crate::app::StatefulTable;
 use tui::backend::TermionBackend;
 use std::io;
-use termion::{event::Key, input::MouseTerminal, raw::RawTerminal, raw::IntoRawMode, screen::AlternateScreen};
+use termion::{input::MouseTerminal, raw::RawTerminal, raw::IntoRawMode, screen::AlternateScreen};
 
 use std::io::Stdout;
 
@@ -19,7 +19,7 @@ impl View {
         let stdout = MouseTerminal::from(stdout);
         let stdout = AlternateScreen::from(stdout);
         let backend = TermionBackend::new(stdout);
-        let mut terminal = Terminal::new(backend).unwrap();
+        let terminal = Terminal::new(backend).unwrap();
         View {
             terminal
         }
@@ -58,7 +58,7 @@ pub fn gen_table(data: &Vec<(String, String)>) -> Table {
                 Cell::from(k.as_str()),
                 Cell::from(v.as_str()),
             ];
-            let mut style = if odd { Style::default() } else { Style::default().fg(Color::DarkGray) };
+            let style = if odd { Style::default() } else { Style::default().fg(Color::DarkGray) };
             odd = !odd;
             Row::new(cells).style(style)
         }).collect();

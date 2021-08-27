@@ -1,6 +1,7 @@
 use tui::widgets::TableState;
 use crate::client::{Client};
 use crate::ui::View;
+use crate::CliArgs;
 
 pub struct StatefulTable {
     pub state: TableState,
@@ -44,17 +45,19 @@ pub struct App<'a> {
     pub should_quit: bool,
     pub table: StatefulTable,
     pub client: Client,
-    pub view: View
+    pub view: View,
+    args: CliArgs,
 }
 
 impl<'a> App<'a> {
-    pub fn new(title: &'a str, view: View) -> App<'a> {
+    pub fn new(title: &'a str, view: View, args: CliArgs) -> App<'a> {
         App {
             title,
             should_quit: false,
             table: StatefulTable::new(),
-            client: Client::new(),
+            client: Client::new(&args),
             view,
+            args,
         }
     }
 

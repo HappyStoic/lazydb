@@ -8,21 +8,39 @@ mod client;
 
 use app::App;
 
-use std::io;
-use termion::{event::Key, input::MouseTerminal, raw::IntoRawMode, screen::AlternateScreen};
-use tui::backend::TermionBackend;
-use tui::layout::{Constraint, Direction, Layout};
-use tui::widgets::{Block, Borders}; 
-use tui::Terminal;
+use termion::event::Key;
 use util::event::{Event, Events};
 use std::error::Error;
+use clap::{Clap, AppSettings};
 use crate::ui::View;
 
+
+const APP_TITLE: &str = "Lazydb";
+
+#[derive(Clap)]
+#[clap(version = "0.0.1", author = "Martin Řepa. <repa.martin@protonmail.ch>")]
+#[clap(setting = AppSettings::ColoredHelp)]
+pub struct CliArgs {
+    /// Remote host to connect to
+    #[clap(short, long)]
+    host: String,
+    /// Port on which database is listening on
+    #[clap(short, long)]
+    port: u16,
+    /// Optional username
+    #[clap(long)]
+    username: Option<String>,
+    /// Optional password
+    #[clap(long)]
+    password: Option<String>,
+}
+
 fn main() -> Result<(), Box<dyn Error>> {
+    let args: CliArgs = CliArgs::parse();
 
     let events = Events::new();
-    let mut view = View::new();
-    let mut app = App::new("Lazydb", view);
+    let view = View::new();
+    let mut app = App::new(APP_TITLE, view, args);
     app.init();
 
     loop {

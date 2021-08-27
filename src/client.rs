@@ -1,17 +1,18 @@
 use redis::{Commands, Connection};
+use crate::CliArgs;
 
 pub struct Client {
     conn: Connection,
 }
 
 impl Client{
-    pub fn new() -> Client {
-        let err = "Could not establish connection";
+    pub fn new(args: &CliArgs) -> Client {
+        let err = format!("Could not establish connection to {}:{}", args.host, args.port);
         Client {
-            conn: redis::Client::open("redis://127.0.0.1/")
-                .expect(err)
+            conn: redis::Client::open(format!("redis://{}:{}/", args.host, args.port))
+                .expect(err.as_str())
                 .get_connection()
-                .expect(err)
+                .expect(err.as_str())
         }
     }
 

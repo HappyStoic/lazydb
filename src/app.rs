@@ -68,7 +68,7 @@ impl<'a> App<'a> {
     }
 
     pub fn update_view(&mut self){
-        self.view.draw(&mut self.table);
+        self.view.draw(&mut self.table, &self.args);
     }
 
     pub fn on_up(&mut self) {

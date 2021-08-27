@@ -44,6 +44,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     app.init();
 
     loop {
+        app.update_view();
         if let Event::Input(input) = events.next()? {
             match input {
                 Key::Char(c) => {
@@ -57,12 +58,11 @@ fn main() -> Result<(), Box<dyn Error>> {
                 }
                 _ => {}
             }
-            app.update_view();
         }
         if app.should_quit {
             break;
         }
-
+        //TODO add a bit of sleep here?
     }
     Ok(())
 }
